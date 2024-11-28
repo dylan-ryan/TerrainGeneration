@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MeshGenerator : MonoBehaviour
 {
     Mesh mesh;
+    public Slider slider;
 
     Vector3[] vertices;
     int[] triangles;
+
+    public float scale = 2;
 
     public int xSize = 20;
     public int zSize = 20;
@@ -28,6 +32,20 @@ public class MeshGenerator : MonoBehaviour
         Application.Quit();
     }
 
+    public void ButtonGenerate()
+    {
+        mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh;
+
+        CreateShape();
+        UpdateMesh();
+    }
+
+    public void SliderStrength()
+    {
+        scale = slider.value;
+    }
+
     void CreateShape()
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
@@ -37,7 +55,7 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float y = Mathf.PerlinNoise(x * strength, z * strength) * 2f;
+                float y = Mathf.PerlinNoise(x * strength, z * strength) * scale;
                 vertices[i] = new Vector3(x, y, z);
                 i++;
             }
