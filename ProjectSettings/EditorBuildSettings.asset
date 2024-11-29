@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MeshGenerator.unity
+    guid: 091dd3b2e8b8b89459cf8147cf832c62
   m_configObjects: {}

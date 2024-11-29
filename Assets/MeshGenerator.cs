@@ -20,6 +20,8 @@ public class MeshGenerator : MonoBehaviour
 
     void Start()
     {
+        slider.value = scale;
+
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
 
@@ -50,12 +52,30 @@ public class MeshGenerator : MonoBehaviour
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
 
+        int octaves = 3;
+        float amplitude = 1f;
+        float frequency = 1f;
+        float persistence = 0.5f;
+        float lacunarity = 2f;
 
         for (int i = 0, z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float y = Mathf.PerlinNoise(x * strength, z * strength) * scale;
+                float y = 0f;
+
+                float tempAmplitude = amplitude;
+                float tempFrequency = frequency;
+
+                for (int o = 0; o < octaves; o++)
+                {
+                    y += Mathf.PerlinNoise(x * tempFrequency * strength, z * tempFrequency * strength) * tempAmplitude;
+
+                    tempAmplitude *= persistence;
+                    tempFrequency *= lacunarity;
+                }
+
+                y *= scale;
                 vertices[i] = new Vector3(x, y, z);
                 i++;
             }
@@ -83,6 +103,7 @@ public class MeshGenerator : MonoBehaviour
             vert++;
         }
     }
+
 
     void UpdateMesh()
     {
